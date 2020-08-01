@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.rgit.textaphone">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="Textaphone"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name="com.rgit.textaphone.StartActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.rgit.textaphone.RegisterActivity"
+            android:parentActivityName="com.rgit.textaphone.StartActivity" />
+        <activity android:name="com.rgit.textaphone.MainActivity" />
+        <activity
+            android:name="com.rgit.textaphone.LoginActivity"
+            android:parentActivityName="com.rgit.textaphone.StartActivity" />
+        <activity android:name="com.rgit.textaphone.MessageActivity" />
+        <activity
+            android:name="com.rgit.textaphone.ResetPasswordActivity"
+            android:parentActivityName="com.rgit.textaphone.LoginActivity" />
+
+        <service android:name="com.rgit.textaphone.Notifications.MyFirebaseIdService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <service android:name="com.rgit.textaphone.Notifications.MyFirebaseMessaging"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
+    </application>
+
+</manifest>
