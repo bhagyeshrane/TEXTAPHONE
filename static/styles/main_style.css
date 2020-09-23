@@ -13,13 +13,6 @@ h1 {
     padding-bottom: 1em;
 }
 
-#image-section {
-    min-width: 30%;
-    max-width: 30%;
-    margin-right: 2em;
-    padding: 0 0 0 2em;
-    float: left;
-}
 
 img {
     float: left;
