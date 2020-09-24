@@ -18,6 +18,14 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('#user_message').value = '';
     };
 
+    //text to speech sent message
+    document.querySelector('#record_button').onclick = () => {
+    window.location.replace("www.google.com")
+    var msg_to_voice = new SpeechSynthesisUtterance();
+    msg_to_voice.text = msg;
+    window.speechSynthesis.speak(msg_to_voice);
+    };
+
     // Display all incoming messages
     socket.on('message', data => {
 

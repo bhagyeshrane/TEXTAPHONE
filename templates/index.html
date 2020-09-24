@@ -11,13 +11,19 @@
             {{ displayField(form.username, 'Username', autocomplete="off", autofocus=true) }}
             {{ displayField(form.password, 'Password') }}
             {{ displayField(form.confirm_pswd, 'Retype Password') }}
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-warning">
-            </div>
+            <br>
+            <div>
+            <h7>Are you visually impaired?</h5><br>
+                <input type="radio" name="options" value="blind"> YES <br>
+                <input type="radio" name="options" value="notblind" checked> NO <br>       
+                </div>
+                <br>
+                <div class="form-group">
+                    <input type="submit" value="Create Account" class="btn btn-warning">
+                </div>          
             {{ form.csrf_token }}
         </form>
 
         <hr>
-
         <p>Already registered? <a href={{url_for('login')}}>Login here</a>.</p>
 {% endblock %}

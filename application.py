@@ -9,13 +9,11 @@ from models import *
 
 # Configure app
 app = Flask(__name__)
-app.secret_key=os.environ.get('SECRET')
-app.config['WTF_CSRF_SECRET_KEY'] = "b'f\xfa\x8b{X\x8b\x9eM\x83l\x19\xad\x84\x08\xab"
+app.secret_key = 'replace later'
 
-# Configure database
-app.config['SQLALCHEMY_DATABASE_URI']=os.environ.get('DATABASE_URL')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
+# Configure Database
+app.config['SQLALCHEMY_DATABASE_URI']='postgres://tnjvjmfnqgqyzq:94e8bb5e51feb560ed7fe2b422cbb96da8917628142445d2d17b30264b72a509@ec2-3-214-46-194.compute-1.amazonaws.com:5432/dfufe866gh6h90'
+db =  SQLAlchemy(app)
 
 # Initialize login manager
 login = LoginManager(app)
@@ -40,12 +38,13 @@ def index():
     if reg_form.validate_on_submit():
         username = reg_form.username.data
         password = reg_form.password.data
+        blind = request.form.getlist('options')
 
         # Hash password
         hashed_pswd = pbkdf2_sha256.hash(password)
 
         # Add username & hashed password to DB
-        user = User(username=username, hashed_pswd=hashed_pswd)
+        user = User(username=username, password=hashed_pswd, blind=blind)
         db.session.add(user)
         db.session.commit()
 
@@ -64,7 +63,11 @@ def login():
     if login_form.validate_on_submit():
         user_object = User.query.filter_by(username=login_form.username.data).first()
         login_user(user_object)
-        return redirect(url_for('chat'))
+        if user_object.blind=="{notblind}":
+            return redirect(url_for('chat'))
+        elif user_object.blind=="{blind}":
+            return redirect(url_for('chatblind'))
+ 
 
     return render_template("login.html", form=login_form)
 
@@ -86,6 +89,15 @@ def chat():
         return redirect(url_for('login'))
 
     return render_template("chat.html", username=current_user.username, rooms=ROOMS)
+
+@app.route("/chatblind", methods=['GET', 'POST'])
+def chatblind():
+
+    if not current_user.is_authenticated:
+        flash('Please login', 'danger')
+        return redirect(url_for('login'))
+
+    return render_template("chatblind.html", username=current_user.username, rooms=ROOMS)
 
 
 @app.errorhandler(404)
