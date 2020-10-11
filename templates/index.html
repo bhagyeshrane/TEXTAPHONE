@@ -1,29 +1,20 @@
-{% from 'field-macro.html' import displayField %}
-{% extends "prelogin-layout.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Chat App</title>
+</head>
+<body>
+<h1>My Chat App</h1>
+<h3>Hi {% if current_user.is_authenticated %}{{ current_user.username }}{% else %}Guest{% endif %}!</h3>
 
-{% block title %}Register {% endblock title%}
-
-{% block content %}
-        <h2>Get started!</h2>
-        <p>First time here? Register to start using Textaphone</p>
-
-        <form action="{{ url_for('index') }}", method="POST">
-            {{ displayField(form.username, 'Username', autocomplete="off", autofocus=true) }}
-            {{ displayField(form.password, 'Password') }}
-            {{ displayField(form.confirm_pswd, 'Retype Password') }}
-            <br>
-            <div>
-            <h7>Are you visually impaired?</h5><br>
-                <input type="radio" name="options" value="blind"> YES <br>
-                <input type="radio" name="options" value="notblind" checked> NO <br>       
-                </div>
-                <br>
-                <div class="form-group">
-                    <input type="submit" value="Create Account" class="btn btn-warning">
-                </div>          
-            {{ form.csrf_token }}
-        </form>
-
-        <hr>
-        <p>Already registered? <a href={{url_for('login')}}>Login here</a>.</p>
-{% endblock %}
+{% if current_user.is_authenticated %}
+    <h3>My rooms</h3>
+    <ul>
+        {% for room in rooms %}
+            <li><a href="/rooms/{{ room._id.room_id }}">{{ room.room_name }}</a></li>
+        {% endfor %}
+    </ul>
+{% endif %}
+</body>
+</html>
