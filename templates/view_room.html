@@ -45,7 +45,7 @@
         let message_input = document.getElementById('message_input');
 
         document.getElementById('message_input_form').onsubmit = function (e) {
-            var msg = new SpeechSynthesisUtterance("Your sent message is...." + transcript);
+            var msg = new SpeechSynthesisUtterance("Your sent message is...." + message_input.value);
             window.speechSynthesis.speak(msg);
             let message = message_input.value.trim();
             if (message.length) {
