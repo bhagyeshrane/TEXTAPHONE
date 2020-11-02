@@ -8,19 +8,16 @@
 <h1>Welcome to chat room: {{ room.name }}</h1>
 
 
-
-
 <button type="button" id="load_older_messages_btn">Load Older Messages</button>
 <div id="messages">
     {% for message in messages %}
-        <div><b>{{ message.sender }}&nbsp;[{{ message.created_at }}]:&nbsp;</b> {{ message.text }}</div>
+        <div><b>{{ message.sender }}&nbsp;[{{ message.created_at }}]:&nbsp;</b> {{ message.text }} &#{{ message.sentiment }};</div>
     {% endfor %}
 </div>
 
 <form id="message_input_form">
     <input type="text" id="message_input" placeholder="Enter your message here">
-    <button type="submit" name="sendbutton">Send</button>
-    <button type="button" onclick="speechrec()">Record</button>
+    <button type="submit">Send</button>
 </form>
 
 <h3>Members</h3>
@@ -45,8 +42,7 @@
         let message_input = document.getElementById('message_input');
 
         document.getElementById('message_input_form').onsubmit = function (e) {
-            var msg = new SpeechSynthesisUtterance("Your sent message is...." + message_input.value);
-            window.speechSynthesis.speak(msg);
+            e.preventDefault();
             let message = message_input.value.trim();
             if (message.length) {
                 socket.emit('send_message', {
@@ -60,32 +56,6 @@
         }
     });
 
-    function speechrec(){
-            var recorded_msg= ""; 
-            var recognition = new window.webkitSpeechRecognition();
-            recognition.onstart = function() {
-            console.log("Voice recognition started. Try speaking into the microphone.");
-            };
-            recognition.onresult = function(event) {
-            var transcript = event.results[0][0].transcript;
-            var msg = new SpeechSynthesisUtterance("Your sent message is...." + transcript);
-            window.speechSynthesis.speak(msg);
-            let message = transcript.trim();
-            if (message.length) {
-                socket.emit('send_message', {
-                    username: "{{ username }}",
-                    room: "{{ room._id }}",
-                    message: message
-                })
-            }
-            }
-            recognition.start();
-            
-    }
-
-
-
-
     let page = 0;
 
     document.getElementById("load_older_messages_btn").onclick = (e) => {
@@ -97,14 +67,14 @@
             }
         }).then(response => {
             response.json().then(messages => {
-                messages.reverse().forEach(message => prepend_message(message.text, message.sender, message.created_at));
+                messages.reverse().forEach(message => prepend_message(message.text, message.sender, message.created_at, message.sentiment));
             })
         })
     };
 
-    function prepend_message(message, username, created_at) {
+    function prepend_message(message, username, created_at, sentiment ){
         const newNode = document.createElement('div');
-        newNode.innerHTML = `<b>${username}&nbsp;[${created_at}]:&nbsp;</b> ${message}`;
+        newNode.innerHTML = `<b>${username}&nbsp;[${created_at}]:&nbsp;</b> ${message} &#${sentiment};`;
         const messages_div = document.getElementById('messages');
         messages_div.insertBefore(newNode, messages_div.firstChild);
     }
@@ -117,9 +87,8 @@
     };
 
     socket.on('receive_message', function (data) {
-        console.log(data);
         const newNode = document.createElement('div');
-        newNode.innerHTML = `<b>${data.username}&nbsp;[${data.created_at}]:&nbsp;</b> ${data.message}`;
+        newNode.innerHTML = `<b>${data.username}&nbsp;[${data.created_at}]:&nbsp;</b> ${data.message} &#${data.sentiment}; `;
         document.getElementById('messages').appendChild(newNode);
     });
 

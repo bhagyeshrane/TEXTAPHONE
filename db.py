@@ -6,9 +6,11 @@ from werkzeug.security import generate_password_hash
 
 from user import User
 
+
+
 client = MongoClient("mongodb+srv://textaphone:textaphone@textaphone.6pq0s.mongodb.net/textaphone?retryWrites=true&w=majority")
 
-chat_db = client.get_database("textaphoneDB")
+chat_db = client.get_database("ChatDB")
 users_collection = chat_db.get_collection("users")
 rooms_collection = chat_db.get_collection("rooms")
 room_members_collection = chat_db.get_collection("room_members")
@@ -75,8 +77,9 @@ def is_room_admin(room_id, username):
         {'_id': {'room_id': ObjectId(room_id), 'username': username}, 'is_room_admin': True})
 
 
-def save_message(room_id, text, sender):
-    messages_collection.insert_one({'room_id': room_id, 'text': text, 'sender': sender, 'created_at': datetime.now()})
+def save_message(room_id, text, sender, sentiment):
+
+    messages_collection.insert_one({'room_id': room_id, 'text': text, 'sender': sender, 'created_at': datetime.now(), 'sentiment' : sentiment})
 
 
 MESSAGE_FETCH_LIMIT = 3

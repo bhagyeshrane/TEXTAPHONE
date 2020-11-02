@@ -5,22 +5,50 @@ from flask import Flask, render_template, request, redirect, url_for
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_socketio import SocketIO, join_room, leave_room
 from pymongo.errors import DuplicateKeyError
-from flask_gtts import gtts
 
-from db import get_user, save_user, save_room, add_room_members, get_rooms_for_user, get_room, is_room_member, get_room_members, is_room_admin, update_room, remove_room_members, save_message, get_messages
+from db import get_user, save_user, save_room, add_room_members, get_rooms_for_user, get_room, is_room_member, \
+    get_room_members, is_room_admin, update_room, remove_room_members, save_message, get_messages
+
+#ml imports
+import numpy as np  
+from tensorflow.keras.models import load_model
+import joblib
+import json
+
+# ML SENTIMENT ANALYSIS
+def sentences_to_indices(X, word_to_index, max_len):
+    m = X.shape[0]                         
+    X_indices = np.zeros((m,max_len))
+    for i in range(m):                               
+        sentence_words = [i.lower() for i in X[i].split()]
+        j = 0
+        for w in sentence_words:
+            X_indices[i, j] = word_to_index[w]
+            j = j+1
+      
+    
+    return X_indices
+
+model = load_model("my_model")
+
+with open('word_to_index.json') as f:
+	    word_to_index = json.load(f)
+
+
 
 app = Flask(__name__)
-app.secret_key = "SECRET KEY"
+app.secret_key = "sfdjkafnk"
 socketio = SocketIO(app)
 login_manager = LoginManager()
 login_manager.login_view = 'login'
 login_manager.init_app(app)
 
 
+
 @app.route('/')
 def home():
     rooms = []
-    if current_user.is_authenticated:
+    if current_user.is_authenticated():
         rooms = get_rooms_for_user(current_user.username)
     return render_template("index.html", rooms=rooms)
 
@@ -122,7 +150,8 @@ def view_room(room_id):
     if room and is_room_member(room_id, current_user.username):
         room_members = get_room_members(room_id)
         messages = get_messages(room_id)
-        return render_template('view_room.html', username=current_user.username, room=room, room_members=room_members,messages=messages)
+        return render_template('view_room.html', username=current_user.username, room=room, room_members=room_members,
+                               messages=messages)
     else:
         return "Room not found", 404
 
@@ -141,11 +170,27 @@ def get_older_messages(room_id):
 
 @socketio.on('send_message')
 def handle_send_message_event(data):
-    app.logger.info("{} has sent message to the room {}: {}".format(data['username'],
-                                                                    data['room'],
-                                                                    data['message']))
+    # app.logger.info("{} has sent message to the room {}: {}".format(data['username'],
+    #                                                                 data['room'],
+    #                                                                 data['message']))
     data['created_at'] = datetime.now().strftime("%d %b, %H:%M")
-    save_message(data['room'], data['message'], data['username'])
+    
+    indices = sentences_to_indices(np.array([data['message']]), word_to_index, 10)
+    data['sentiment'] = str(np.argmax(model.predict(indices)))
+    if(data['sentiment']=='0'):
+        data['sentiment']=128150
+    elif(data['sentiment']=='1'):
+        data['sentiment']=9917
+    elif(data['sentiment']=='2'):
+        data['sentiment']=128512
+    elif(data['sentiment']=='3'):
+        data['sentiment']=128529
+    elif(data['sentiment']=='4'):
+        data['sentiment']=127860
+    else:
+        pass
+    save_message(data['room'], data['message'], data['username'], data['sentiment'])
+
     socketio.emit('receive_message', data, room=data['room'])
 
 
@@ -170,5 +215,3 @@ def load_user(username):
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)
-    gtts(app)
-
