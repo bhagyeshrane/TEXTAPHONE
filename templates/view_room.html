@@ -18,6 +18,7 @@
 <form id="message_input_form">
     <input type="text" id="message_input" placeholder="Enter your message here">
     <button type="submit">Send</button>
+    <button type="button" onclick="speechrec()">Record</button>
 </form>
 
 <h3>Members</h3>
@@ -31,7 +32,7 @@
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
 <script>
-    const socket = io.connect("http://127.0.0.1:5000");
+    const socket = io.connect("http://192.168.0.109:5000");
 
     socket.on('connect', function () {
         socket.emit('join_room', {
@@ -55,6 +56,30 @@
             message_input.focus();
         }
     });
+
+    function speechrec(){
+            window.SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+            var recorded_msg= ""; 
+            var recognition = new window.SpeechRecognition();
+            recognition.onstart = function() {
+            console.log("Voice recognition started. Try speaking into the microphone.");
+            };
+            recognition.onresult = function(event) {
+            var transcript = event.results[0][0].transcript;
+            var msg = new SpeechSynthesisUtterance("Your sent message is...." + transcript);
+            window.speechSynthesis.speak(msg);
+            let message = transcript.trim();
+            if (message.length) {
+                socket.emit('send_message', {
+                    username: "{{ username }}",
+                    room: "{{ room._id }}",
+                    message: message
+                })
+            }
+            }
+            recognition.start();
+            
+    }
 
     let page = 0;
 
@@ -90,6 +115,10 @@
         const newNode = document.createElement('div');
         newNode.innerHTML = `<b>${data.username}&nbsp;[${data.created_at}]:&nbsp;</b> ${data.message} &#${data.sentiment}; `;
         document.getElementById('messages').appendChild(newNode);
+        if( data.username !== "{{ username }}") {
+        var msg1 = new SpeechSynthesisUtterance(data.username + "  says...." + data.message );
+        window.speechSynthesis.speak(msg1);
+        }
     });
 
     socket.on('join_room_announcement', function (data) {
