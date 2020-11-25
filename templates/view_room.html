@@ -57,30 +57,46 @@
         }
     });
 
-    function speechrec(){
-            window.SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
-            var recorded_msg= ""; 
-            var recognition = new window.SpeechRecognition();
-            recognition.onstart = function() {
-            console.log("Voice recognition started. Try speaking into the microphone.");
-            };
-            recognition.onresult = function(event) {
-            var transcript = event.results[0][0].transcript;
-            var msg = new SpeechSynthesisUtterance("Your sent message is...." + transcript);
-            window.speechSynthesis.speak(msg);
-            let message = transcript.trim();
-            if (message.length) {
-                socket.emit('send_message', {
+    function speechrec() {
+		        // get output div reference
+		        var output = document.getElementById("output");
+		        // get action element reference
+		        var action = document.getElementById("action");
+                // new speech recognition object
+                var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+                var recognition = new SpeechRecognition();
+            
+                // This runs when the speech recognition service starts
+                recognition.onstart = function() {
+                    console.log("listening, please speak...");
+                };
+                
+                recognition.onspeechend = function() {
+                    console.log("stopped listening");                  
+                      recognition.stop();
+                }
+              
+                // This runs when the speech recognition service returns result
+                recognition.onresult = function(event) {
+                    var transcript = event.results[0][0].transcript;
+                    var confidence = event.results[0][0].confidence;
+                    message_input.value = transcript;
+                    let message = message_input.value.trim();
+                    if (message.length) {
+                    socket.emit('send_message', {
                     username: "{{ username }}",
                     room: "{{ room._id }}",
                     message: message
                 })
             }
-            }
-            recognition.start();
-            
-    }
+            message_input.value = '';
+            message_input.focus();
 
+                };
+              
+                 // start recognition
+                 recognition.start();
+	        }
     let page = 0;
 
     document.getElementById("load_older_messages_btn").onclick = (e) => {
