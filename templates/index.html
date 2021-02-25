@@ -12,9 +12,57 @@
     <h3>My rooms</h3>
     <ul>
         {% for room in rooms %}
-            <li><a href="/rooms/{{ room._id.room_id }}">{{ room.room_name }}</a></li>
+            <form method="get" action="/rooms/{{ room._id.room_id }}">
+                <button id="button" type="submit">{{ room.room_name }}</button>
+            </form>
         {% endfor %}
     </ul>
+    <button onclick="decrementroom()">previous</button>
+    <button onclick="incrementroom()">next</button>
+    <button onclick="enter()">Enter</button>
+
 {% endif %}
+
+<script>
+    var buttons = document.querySelectorAll( "button[id^='button']" );
+    var counter=-1;
+    var buttonname;
+    function incrementroom() 
+    {   counter++;
+        if(counter==buttons.length)
+            {
+            counter=-1;
+            buttonname=0;
+            incrementroom();
+            }
+        else{
+            buttonname=buttons[counter];
+            console.log(buttonname);
+        }
+    }
+
+    function decrementroom() 
+    {
+        if(counter<0)
+            {
+            counter=0;
+            buttonname=0;
+            }
+        else{
+            counter=counter-1;
+            buttonname=buttons[counter];
+            console.log(buttonname);
+            }
+    }
+
+
+    function enter()
+    {
+        buttonname.click();
+    }
+       
+</script>
+
+
 </body>
 </html>

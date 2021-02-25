@@ -1,23 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='signupstyle.css') }}">
     <meta charset="UTF-8">
     <title>My Chat App</title>
 </head>
 <body>
 <h1>Sign Up</h1>
 <h3>{{ message }}</h3>
+<div class="signup">    
 <form method="post" action="/signup">
     <label>Username:</label>
-    <input type="text" name="username">
+    <input type="text" id=Uname name="username">
+    <br>
     <br>
     <label>Email:</label>
-    <input type="email" name="email">
+    <input type="email" id="email" name="email">
+    <br>
     <br>
     <label>Password:</label>
-    <input type="password" name="password">
+    <input type="password" id=Pass name="password">
     <br>
-    <button type="submit">Submit</button>
+    <br>
+    <button type="submit" id=log>Submit</button>
 </form>
+</div>
 </body>
 </html>

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='viewroomstyle.css') }}">
     <meta charset="UTF-8">
     <title>My Chat App</title>
 </head>
@@ -9,7 +10,7 @@
 
 
 <button type="button" id="load_older_messages_btn">Load Older Messages</button>
-<div id="messages">
+<div class="messages" id="messages">
     {% for message in messages %}
         <div><b>{{ message.sender }}&nbsp;[{{ message.created_at }}]:&nbsp;</b> {{ message.text }} &#{{ message.sentiment }};</div>
     {% endfor %}
@@ -19,20 +20,22 @@
     <input type="text" id="message_input" placeholder="Enter your message here">
     <button type="submit">Send</button>
     <button type="button" onclick="speechrec()">Record</button>
+    <button type="button" onclick="location.href='/'">Back</button>
 </form>
-
-<h3>Members</h3>
-<ul>
-    {% for member in room_members %}
-        <li>{{ member._id.username }}</li>
-    {% endfor %}
-</ul>
+<div class="member">
+    <h3>Members</h3>
+    <ul>
+        {% for member in room_members %}
+            <li>{{ member._id.username }}</li>
+        {% endfor %}
+    </ul>
+</div>
 
 
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
 <script>
-    const socket = io.connect("http://192.168.0.109:5000");
+    const socket = io.connect("http://127.0.0.1:5000");
 
     socket.on('connect', function () {
         socket.emit('join_room', {
