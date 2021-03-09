@@ -6,7 +6,7 @@ body
     font-family: 'Arial';  
 }  
 
-.login{  
+.createroom{  
     width: 382px;  
     overflow: hidden;  
     margin: auto;  
@@ -17,7 +17,8 @@ body
       
 }  
 
-h1{ 
+
+h1{  
     text-align: center;
     color: #ffffff;  
     padding: 20px;  
@@ -32,22 +33,23 @@ label{
     color: #ffffff;  
     font-size: 17px;  
 }  
-#Uname{  
+#room{  
     width: 300px;  
     height: 30px;  
     border: none;  
     border-radius: 3px;  
     padding-left: 8px;  
 }  
-#Pass{  
+
+#members{  
     width: 300px;  
     height: 30px;  
     border: none;  
     border-radius: 3px;  
     padding-left: 8px;  
-      
-}  
-#log{  
+}       
+ 
+#submit{  
     width: 300px;  
     height: 30px;  
     border: none;  
@@ -56,4 +58,4 @@ label{
     color: blue;  
   
   
-}   
+} 
