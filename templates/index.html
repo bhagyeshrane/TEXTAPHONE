@@ -3,6 +3,8 @@
 <head>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='indexstyle.css') }}">
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Chat App</title>
 </head>
 <body>
@@ -10,7 +12,8 @@
 <h3>Hi {% if current_user.is_authenticated %}{{ current_user.username }}{% else %}Guest{% endif %}!</h3>
 
 {% if current_user.is_authenticated %}
-    <h3>My rooms</h3>
+    <h3 id="myroom">My rooms</h3>
+    <div class="roomlist">
     <ul>
         {% for room in rooms %}
             <form method="get" action="/rooms/{{ room._id.room_id }}">
@@ -18,13 +21,26 @@
             </form>
         {% endfor %}
     </ul>
-
-    <div class="grid-container">
-        <div class="decrement"><button id="decrement" onclick="decrementroom()">previous</button></div>
-        <div class="increment"><button id="increment" onclick="incrementroom()">next</button></div>
-        <div class="enterroom"><button id="enterroom"onclick="enter()">Enter</button>
-        </div>
     </div>
+<div class=container2> 
+    <div class=container> 
+       
+            <button id="decrement" onclick="decrementroom()">previous</button>
+        
+        
+        
+            <button id="increment" onclick="incrementroom()">next</button>
+        
+    
+    </div>
+        <div>
+            <button id="enterroom"onclick="enter()">Enter</button>
+        </div>
+</div>
+
+
+
+
     
 
 {% endif %}
