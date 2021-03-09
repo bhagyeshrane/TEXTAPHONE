@@ -17,32 +17,49 @@ h3{
     color: #ffffff;  
     padding: 20px;  
 }  
-label{  
-    color: #ffffff;  
-    font-size: 17px;  
-}  
-#Uname{  
-    width: 300px;  
-    height: 30px;  
-    border: none;  
-    border-radius: 3px;  
-    padding-left: 8px;  
-}  
-#Pass{  
-    width: 300px;  
-    height: 30px;  
-    border: none;  
-    border-radius: 3px;  
-    padding-left: 8px;  
-      
-}  
-#log{  
-    width: 300px;  
-    height: 30px;  
-    border: none;  
-    border-radius: 17px;  
-    padding-left: 7px;  
-    color: blue;  
-  
-  
+
+
+#increment {
+    background-color: #4CAF50; /* Green */
+    border: 2px solid #000000;
+    color: white;
+    padding: 70px 100px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 24px;
+  }
+#decrement {
+    background-color: #4CAF50; /* Green */
+    border: 2px solid #000000;
+    color: white;
+    padding: 70px 100px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 24px;
+  }
+  #enterroom {
+    background-color: #4CAF50; /* Green */
+    border: 2px solid #000000;
+    color: white;
+    padding: 70px 300px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 24px;
 }   
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 0px 0px;
+    grid-template-areas:
+      ". increment decrement ."
+      ".    .   .   ."
+      ". enterroom enterroom .";
+  }
+  .increment { grid-area: increment; }
+  .decrement { grid-area: decrement; }
+  .enterroom { grid-area: enterroom; }

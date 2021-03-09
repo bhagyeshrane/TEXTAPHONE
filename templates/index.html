@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='indexstyle.css') }}">
     <meta charset="UTF-8">
     <title>My Chat App</title>
 </head>
@@ -13,13 +14,18 @@
     <ul>
         {% for room in rooms %}
             <form method="get" action="/rooms/{{ room._id.room_id }}">
-                <button id="button" type="submit">{{ room.room_name }}</button>
+                <button id="button" name="{{ room.room_name }}" type="submit">{{ room.room_name }}</button>
             </form>
         {% endfor %}
     </ul>
-    <button onclick="decrementroom()">previous</button>
-    <button onclick="incrementroom()">next</button>
-    <button onclick="enter()">Enter</button>
+
+    <div class="grid-container">
+        <div class="decrement"><button id="decrement" onclick="decrementroom()">previous</button></div>
+        <div class="increment"><button id="increment" onclick="incrementroom()">next</button></div>
+        <div class="enterroom"><button id="enterroom"onclick="enter()">Enter</button>
+        </div>
+    </div>
+    
 
 {% endif %}
 
@@ -35,24 +41,30 @@
             buttonname=0;
             incrementroom();
             }
-        else{
+        else if(counter>=0){
             buttonname=buttons[counter];
             console.log(buttonname);
+            var msg1 = new SpeechSynthesisUtterance(buttonname.name);
+            window.speechSynthesis.speak(msg1);
         }
+        console.log("counter :" + counter);
     }
 
     function decrementroom() 
-    {
-        if(counter<0)
+    {   
+        if(counter==0)
             {
-            counter=0;
-            buttonname=0;
+            counter=buttons.length;
+            decrementroom();
             }
-        else{
+        else if(counter>0){
             counter=counter-1;
             buttonname=buttons[counter];
             console.log(buttonname);
+            var msg1 = new SpeechSynthesisUtterance(buttonname.name);
+            window.speechSynthesis.speak(msg1);
             }
+            console.log("counter :" + counter);
     }
 
 
