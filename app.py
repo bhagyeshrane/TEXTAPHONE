@@ -30,6 +30,7 @@ def sentences_to_indices(X, word_to_index, max_len):
     
     return X_indices
 
+
 model = load_model("my_model")
 
 with open('word_to_index.json') as f:
@@ -215,5 +216,5 @@ def load_user(username):
 
 
 if __name__ == '__main__':
-    socketio.run(app, host='127.0.0.1' , port=5000, debug=True)
+    socketio.run(app, host='192.168.0.102' , port=5000, debug=True)
  
