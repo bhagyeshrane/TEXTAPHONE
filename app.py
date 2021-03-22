@@ -215,5 +215,5 @@ def load_user(username):
 
 
 if __name__ == '__main__':
-    socketio.run(app, host='192.168.0.103' , port=5000, debug=True)
+    socketio.run(app, host='127.0.0.1' , port=5000, debug=True)
  
