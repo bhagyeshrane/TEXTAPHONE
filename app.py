@@ -24,11 +24,17 @@ def sentences_to_indices(X, word_to_index, max_len):
         sentence_words = [i.lower() for i in X[i].split()]
         j = 0
         for w in sentence_words:
+          try:
             X_indices[i, j] = word_to_index[w]
             j = j+1
+          except:
+            continue
       
     
     return X_indices
+
+def label_to_emoji(label):
+    return emoji.emojize(emoji_dictionary[str(label)], use_aliases=True)
 
 
 model = load_model("my_model")
@@ -216,5 +222,5 @@ def load_user(username):
 
 
 if __name__ == '__main__':
-    socketio.run(app, host='192.168.0.102' , port=5000, debug=True)
+    socketio.run(app, host='127.0.0.1' , port=5000, debug=True)
  
