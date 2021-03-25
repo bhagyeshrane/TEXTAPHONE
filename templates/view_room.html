@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='viewroomstyle.css') }}">
+    {% if usermode == "text"  %}
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='viewroomstyletext.css') }}">
+    {% else %}
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='viewroomstyle.css') }}">
+    {% endif %}
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Chat App</title>
+    <title>Textaphone</title>
 </head>
 <body>
 <!-- <h1>Welcome to chat room: {{ room.name }}</h1> -->
@@ -99,7 +103,7 @@ var counter=messagesarray.length;
     }
 
 
-    const socket = io.connect("http://187214ca8665.ngrok.io");
+    const socket = io.connect("http://527336fffa23.ngrok.io");
 
     socket.on('connect', function () {
         socket.emit('join_room', {

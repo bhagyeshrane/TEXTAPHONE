@@ -7,7 +7,7 @@ from flask_socketio import SocketIO, join_room, leave_room
 from pymongo.errors import DuplicateKeyError
 
 
-from db import get_user, save_user, save_room, add_room_members, get_rooms_for_user, get_room, is_room_member, \
+from db import get_user, save_user, save_room, add_room_members, get_rooms_for_user, get_mode_for_user, get_room, is_room_member, \
     get_room_members, is_room_admin, update_room, remove_room_members, save_message, get_messages
 
 #ml imports
@@ -56,9 +56,14 @@ login_manager.init_app(app)
 @app.route('/')
 def home():
     rooms = []
-    if current_user.is_authenticated():
+    if current_user.is_authenticated:
+        usermode = get_mode_for_user(current_user.username)
         rooms = get_rooms_for_user(current_user.username)
-        return render_template("index.html", rooms=rooms)
+        return render_template("index.html", rooms=rooms, usermode=usermode)
+    if not current_user.is_authenticated:
+        return render_template("login.html")
+
+    
     
 
 
@@ -91,8 +96,10 @@ def signup():
         username = request.form.get('username')
         email = request.form.get('email')
         password = request.form.get('password')
+        mode = request.form.get('mode')
+
         try:
-            save_user(username, email, password)
+            save_user(username, email, password, mode)
             return redirect(url_for('login'))
         except DuplicateKeyError:
             message = "User already exists!"
@@ -119,7 +126,8 @@ def create_room():
             if current_user.username in usernames:
                 usernames.remove(current_user.username)
             add_room_members(room_id, room_name, usernames, current_user.username)
-            return redirect(url_for('view_room', room_id=room_id))
+            usermode = get_mode_for_user(current_user.username)
+            return redirect(url_for('view_room', room_id=room_id, usermode=usermode))
         else:
             message = "Failed to create room"
     return render_template('create_room.html', message=message)
@@ -159,8 +167,9 @@ def view_room(room_id):
     if room and is_room_member(room_id, current_user.username):
         room_members = get_room_members(room_id)
         messages = get_messages(room_id)
+        usermode = get_mode_for_user(current_user.username)
         return render_template('view_room.html', username=current_user.username, room=room, room_members=room_members,
-                               messages=messages)
+                               messages=messages, usermode=usermode)
     else:
         return "Room not found", 404
 

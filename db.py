@@ -17,9 +17,9 @@ room_members_collection = chat_db.get_collection("room_members")
 messages_collection = chat_db.get_collection("messages")
 
 
-def save_user(username, email, password):
+def save_user(username, email, password, mode):
     password_hash = generate_password_hash(password)
-    users_collection.insert_one({'_id': username, 'email': email, 'password': password_hash})
+    users_collection.insert_one({'_id': username, 'email': email, 'password': password_hash, 'mode':mode })
 
 
 def get_user(username):
@@ -66,6 +66,10 @@ def get_room_members(room_id):
 
 def get_rooms_for_user(username):
     return list(room_members_collection.find({'_id.username': username}))
+
+def get_mode_for_user(username):
+    user_data = users_collection.find_one({'_id': username})   
+    return user_data["mode"]
 
 
 def is_room_member(room_id, username):
