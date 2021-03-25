@@ -57,5 +57,13 @@ label{
     padding-left: 7px;  
     color: blue;  
   
-  
-} 
+ 
+}
+#back{  
+    width: 120px;  
+    height: 20px;  
+    border: none;  
+    border-radius: 17px;  
+    padding-left: 7px;  
+    color: rgb(0, 0, 0);      
+}  

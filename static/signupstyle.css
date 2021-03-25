@@ -69,6 +69,17 @@ label{
   
   
 } 
+
+
+#login{  
+    width: 120px;  
+    height: 40px;  
+    border: none;  
+    border-radius: 17px;  
+    padding-left: 7px;  
+    color: rgb(0, 0, 0);      
+}  
+
 }
 
 
@@ -135,5 +146,13 @@ label{
         font-size: larger;
       
     } 
-
+    #login{  
+        width: 120px;  
+        height: 40px;  
+        border: none;  
+        border-radius: 17px;  
+        padding-left: 7px;  
+        color: rgb(0, 0, 0);      
+    }  
+    
 }
