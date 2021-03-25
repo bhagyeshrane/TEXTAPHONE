@@ -1,3 +1,4 @@
+@media (min-width:601px){
 body  
 {   text-align: center;
     margin: 0;  
@@ -57,3 +58,61 @@ label{
   
   
 }   
+
+}
+
+@media (max-width:600px){
+
+    body  
+    {   text-align: center;
+        margin: 0;  
+        padding: 0;  
+        background-color:#0c71a0ba;  
+        font-family: 'Arial';  
+    }  
+    
+    
+    
+    h1{ 
+        text-align: center;
+        color: #ffffff;  
+        padding: 20px;  
+    } 
+     
+    h3{  
+        text-align: center;
+        color: #ffffff;  
+        padding: 20px;  
+    }  
+    label{  
+        color: #ffffff;  
+        font-size: 24px;  
+    }  
+    #Uname{  
+        width: 300px;  
+        height: 30px;  
+        border: none;  
+        border-radius: 3px;  
+        padding-left: 8px;  
+    }  
+    #Pass{  
+        width: 300px;  
+        height: 30px;  
+        border: none;  
+        border-radius: 3px;  
+        padding-left: 8px;  
+          
+    }  
+    #log{  
+        width: 300px;  
+        height: 30px;  
+        border: none;  
+        border-radius: 17px;  
+        padding-left: 7px;  
+        color: blue;  
+      
+      
+    }   
+
+
+}

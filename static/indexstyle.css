@@ -1,7 +1,11 @@
 @media (max-width:600px) {
    body h1{
        text-align: center;
+       display: none;
    }
+   h3{
+    display: none;
+}
    #myroom{
     display: none;
    }

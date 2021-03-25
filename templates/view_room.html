@@ -38,7 +38,7 @@ var messagessender = [];
                 <input type="text" id="message_input" placeholder="Enter your message here">
                 <button id="send" type="submit">Send</button>
                 <button id="rec" type="button" onclick="speechrec()">Record</button>
-                <button id="back" type="button" onclick="location.href='/'">Back</button>
+                <button id="back" type="button" onclick="exitchatroom()"  >Back</button>
             </form>
     </div>
 </div>
@@ -58,7 +58,11 @@ var messagessender = [];
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
 <script>
 
-
+function exitchatroom(){
+    var msg1 = new SpeechSynthesisUtterance("You are now in chatroom list page");
+    window.speechSynthesis.speak(msg1);
+    window.history.back();
+}
 var counter=messagesarray.length;
     function nextmessage()
     {   console.log(messagesarray);
@@ -95,7 +99,7 @@ var counter=messagesarray.length;
     }
 
 
-    const socket = io.connect("http://192.168.0.104:5000");
+    const socket = io.connect("http://187214ca8665.ngrok.io");
 
     socket.on('connect', function () {
         socket.emit('join_room', {
@@ -153,7 +157,7 @@ var counter=messagesarray.length;
                     message: message
                     
                 })
-                messagesarray.push("send_message");
+                messagesarray.push("{{ send_message }}");
                 messagessender.push("{{ username }}");
                 counter=messagesarray.length;
                 var msg1 = new SpeechSynthesisUtterance("Your sent message was, " + message);
@@ -215,33 +219,42 @@ var counter=messagesarray.length;
             // Dissapointed
             msg1.pitch=0.7;
             msg1.rate=1.4;
+            window.speechSynthesis.speak(msg1);
+            var msg1 = new SpeechSynthesisUtterance(", Negative mood detected.");
+            window.speechSynthesis.speak(msg1);
             }
-        // else if(data.sentiment==9917){
-        //     // Football
-        //     msg1.pitch=0.6;
-        //     msg1.rate=1.2;
-        // }
-        // else if(data.sentiment==127860){
-        //     // Eat
-        //     msg1.pitch=0.6;
-        //     msg1.rate=1.2;
-        // }
+        else if(data.sentiment==9917){
+            // Football
+            window.speechSynthesis.speak(msg1);
+            var msg1 = new SpeechSynthesisUtterance(", Mood Detected, sporty.");
+            window.speechSynthesis.speak(msg1);
+        }
+        else if(data.sentiment==127860){
+            // Eat
+            window.speechSynthesis.speak(msg1);
+            var msg1 = new SpeechSynthesisUtterance(", Mood detected , Feeling hungry ");
+            window.speechSynthesis.speak(msg1);
+        }
         else if(data.sentiment==128512){
             // smile
             msg1.pitch=1.2;
             msg1.rate=1.1;
+            window.speechSynthesis.speak(msg1);
+            var msg1 = new SpeechSynthesisUtterance(", Mood Detected, Positive.");
+            window.speechSynthesis.speak(msg1);
         }
         else if(data.sentiment==128150){
             // love
             msg1.pitch=1.1;
             msg1.rate=0.8;
+            window.speechSynthesis.speak(msg1);
+            var msg1 = new SpeechSynthesisUtterance(", Mood Detected, love.");
+            window.speechSynthesis.speak(msg1);
         }
         console.log(data.sentiment);
-        window.speechSynthesis.speak(msg1);
         messagesarray.push(data.username);
         messagessender.push(data.username);
         console.log(messagessender);
-
         }
     });
 

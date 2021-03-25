@@ -93,6 +93,8 @@
 
     function enter()
     {
+        var msg1 = new SpeechSynthesisUtterance("You are now entering" + buttonname.name + "room");
+        window.speechSynthesis.speak(msg1);
         buttonname.click();
     }
        

@@ -58,7 +58,8 @@ def home():
     rooms = []
     if current_user.is_authenticated():
         rooms = get_rooms_for_user(current_user.username)
-    return render_template("index.html", rooms=rooms)
+        return render_template("index.html", rooms=rooms)
+    
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -222,5 +223,5 @@ def load_user(username):
 
 
 if __name__ == '__main__':
-    socketio.run(app, host='127.0.0.1' , port=5000, debug=True)
+    socketio.run(app, host='127.0.0.1', port=80, debug=True)
  
