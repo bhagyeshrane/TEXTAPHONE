@@ -7,7 +7,7 @@ Tending to the issues of people with vocal, visual and hearing troubles through 
 # 1.2 ( Creating a web app with Flask )
 ![1.2](https://github.com/mraniketr/TextaPhone/blob/master/Media/Updates/vlcsnap-2020-10-12-12h39m54s812.png?raw=true)
 
-**Watch video demo - https://youtu.be/tJj1wcGDKeM**
+**Watch video demo - https://youtu.be/X3t5eSJ-5x4**
 Src for chat app - https://github.com/nikhilkumarsingh/flask-chat-app
 
 # 1.1 (Creating a multiclass Sentiment Analysis)
